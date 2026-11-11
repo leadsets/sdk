@@ -244,7 +244,7 @@ export interface CompaniesSearchResponse extends APIResponse {
 }
 
 export interface CompanyEnrichParams {
-  /** Company domain or website URL, e.g. "northwind.io". */
+  /** Company domain or website URL, e.g. "example.com". */
   domain?: string
   /** LinkedIn company page URL. */
   linkedin_url?: string
@@ -292,7 +292,7 @@ export interface EmailVerifyResponse extends APIResponse {
 // ---- Scrape --------------------------------------------------------------------------------
 
 export interface ScrapeParams {
-  /** Company domain, e.g. "northwind.io". */
+  /** Company domain, e.g. "example.com". */
   domain?: string
   /** A specific page to start from (overrides domain). */
   url?: string

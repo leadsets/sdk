@@ -5,7 +5,7 @@ import { Leadsets, PermissionDeniedError, ScrapeUnitsExhaustedError } from '@lea
 const ls = new Leadsets()
 
 try {
-  const res = await ls.scrape.jobs({ domain: 'northwind.io', max_pages: 3 })
+  const res = await ls.scrape.jobs({ domain: 'example.com', max_pages: 3 })
   console.log(`${res.count} open roles at ${res.careers_url}`)
   for (const job of res.jobs) console.log(`- ${job.title} (${job.team ?? 'no team'}, ${job.location ?? 'no location'})`)
   console.log('scrape units left:', res.usage.scrape_units_left)

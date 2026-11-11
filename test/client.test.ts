@@ -143,25 +143,25 @@ describe('endpoints', () => {
       body: { person: person(), matched_by: 'linkedin_url', usage: { enrich_records_counted: 1 }, request_id: 'r' },
       headers: { 'X-Leadsets-Free-Remaining': '999' },
     })
-    const res = await client(m).people.enrich({ linkedin_url: 'https://www.linkedin.com/in/mayachen' })
+    const res = await client(m).people.enrich({ linkedin_url: 'https://www.linkedin.com/in/example' })
     expect(m.calls[0]).toMatchObject({
       method: 'POST',
       url: 'https://api.leadsets.ai/v1/people/enrich',
-      body: { linkedin_url: 'https://www.linkedin.com/in/mayachen' },
+      body: { linkedin_url: 'https://www.linkedin.com/in/example' },
     })
-    expect(res.person.full_name).toBe('Maya Chen')
+    expect(res.person.full_name).toBe('Jane Doe')
     expect(res.matched_by).toBe('linkedin_url')
     expect(res.lastResponse.rateLimit.freeRemaining).toBe(999)
   })
 
   it('companies.enrich', async () => {
-    const m = mockFetch({ body: { company: { company_id: 'c1', name: 'Northwind' }, usage: {}, request_id: 'r' } })
-    const res = await client(m).companies.enrich({ domain: 'northwind.io' })
+    const m = mockFetch({ body: { company: { company_id: 'c1', name: 'Example' }, usage: {}, request_id: 'r' } })
+    const res = await client(m).companies.enrich({ domain: 'example.com' })
     expect(m.calls[0]).toMatchObject({
       url: 'https://api.leadsets.ai/v1/companies/enrich',
-      body: { domain: 'northwind.io' },
+      body: { domain: 'example.com' },
     })
-    expect(res.company.name).toBe('Northwind')
+    expect(res.company.name).toBe('Example')
   })
 
   it('emails.verify takes an object, a string or an array', async () => {
@@ -194,12 +194,12 @@ describe('endpoints', () => {
     const m = mockFetch(
       {
         body: {
-          domain: 'northwind.io',
-          url: 'https://northwind.io/',
-          name: 'Northwind',
+          domain: 'example.com',
+          url: 'https://example.com/',
+          name: 'Example',
           description: null,
           headings: [],
-          key_links: { pricing: 'https://northwind.io/pricing' },
+          key_links: { pricing: 'https://example.com/pricing' },
           social: {},
           pages: [],
           units_used: 1,
@@ -210,8 +210,8 @@ describe('endpoints', () => {
       },
       {
         body: {
-          domain: 'northwind.io',
-          careers_url: 'https://northwind.io/careers',
+          domain: 'example.com',
+          careers_url: 'https://example.com/careers',
           jobs: [
             { title: 'AE', url: 'u', location: 'Remote', team: 'Sales', posted: null, source: 'site', found_on: 'u' },
           ],
@@ -224,17 +224,17 @@ describe('endpoints', () => {
       },
     )
     const ls = client(m)
-    const c = await ls.scrape.company({ domain: 'northwind.io', max_pages: 3 })
-    const j = await ls.scrape.jobs({ domain: 'northwind.io' })
+    const c = await ls.scrape.company({ domain: 'example.com', max_pages: 3 })
+    const j = await ls.scrape.jobs({ domain: 'example.com' })
     expect(m.calls[0]).toMatchObject({
       url: 'https://api.leadsets.ai/v1/scrape/company',
-      body: { domain: 'northwind.io', max_pages: 3 },
+      body: { domain: 'example.com', max_pages: 3 },
     })
     expect(m.calls[1]).toMatchObject({
       url: 'https://api.leadsets.ai/v1/scrape/jobs',
-      body: { domain: 'northwind.io' },
+      body: { domain: 'example.com' },
     })
-    expect(c.key_links.pricing).toBe('https://northwind.io/pricing')
+    expect(c.key_links.pricing).toBe('https://example.com/pricing')
     expect(c.usage.scrape_units_left).toBe(99)
     expect(j.jobs[0]?.title).toBe('AE')
   })

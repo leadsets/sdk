@@ -124,13 +124,13 @@ Each person has `person_id`, names, `title`, `seniority` and `function` (with fi
 Look a person up by LinkedIn URL, by work email, or by name plus company domain.
 
 ```ts
-const { person, matched_by } = await ls.people.enrich({ linkedin_url: 'https://www.linkedin.com/in/mayachen' })
-await ls.people.enrich({ email: 'maya@northwind.io' })
-await ls.people.enrich({ full_name: 'Maya Chen', company_domain: 'northwind.io' })
+const { person, matched_by } = await ls.people.enrich({ linkedin_url: 'https://www.linkedin.com/in/example' })
+await ls.people.enrich({ email: 'jane@example.com' })
+await ls.people.enrich({ full_name: 'Jane Doe', company_domain: 'example.com' })
 await ls.people.enrich({
-  first_name: 'Maya',
-  last_name: 'Chen',
-  company_domain: 'northwind.io',
+  first_name: 'Jane',
+  last_name: 'Doe',
+  company_domain: 'example.com',
   include_personal_email: true,
 })
 ```
@@ -153,8 +153,8 @@ console.log(res.items.map((c) => [c.name, c.domain, c.employees]))
 ### Companies enrich
 
 ```ts
-const { company } = await ls.companies.enrich({ domain: 'northwind.io' }) // a URL works too
-await ls.companies.enrich({ linkedin_url: 'https://www.linkedin.com/company/northwind' })
+const { company } = await ls.companies.enrich({ domain: 'example.com' }) // a URL works too
+await ls.companies.enrich({ linkedin_url: 'https://www.linkedin.com/company/example' })
 
 console.log(company.industry, company.naics, company.employee_range, company.revenue_range, company.technologies)
 ```
@@ -164,8 +164,8 @@ console.log(company.industry, company.naics, company.employee_range, company.rev
 One email or up to 100 per call. Each result has a `status` (`verified`, `catch_all`, `unknown`, `invalid`), a `confidence` and `checked_at`.
 
 ```ts
-const one = await ls.emails.verify('maya@northwind.io')
-const many = await ls.emails.verify(['maya@northwind.io', 'sam@stackfold.com'])
+const one = await ls.emails.verify('jane@example.com')
+const many = await ls.emails.verify(['jane@example.com', 'sam@example.org'])
 // or: ls.emails.verify({ emails: [...] })
 
 console.log(many.summary) // { verified, catch_all, unknown, invalid, not_checked }
@@ -179,7 +179,7 @@ for (const r of many.results) {
 A website as structured JSON: name, description, headings, key links (pricing, customers, careers, docs and more), social profiles and page text. `max_pages` (1–10, default 1) adds the about, pricing, customers, product and careers pages. Scraping is available on paid plans with scrape units.
 
 ```ts
-const site = await ls.scrape.company({ domain: 'northwind.io', max_pages: 3 })
+const site = await ls.scrape.company({ domain: 'example.com', max_pages: 3 })
 console.log(site.name, site.key_links.pricing, site.social.linkedin)
 console.log(
   site.pages.map((p) => p.url),
@@ -192,7 +192,7 @@ console.log(
 Open roles from a company's careers page or job board: title, link, team, location and posted date when shown. `max_pages` defaults to 3.
 
 ```ts
-const res = await ls.scrape.jobs({ domain: 'northwind.io' })
+const res = await ls.scrape.jobs({ domain: 'example.com' })
 console.log(res.count, res.careers_url)
 for (const job of res.jobs) console.log(job.title, job.team, job.location, job.url)
 ```
@@ -274,7 +274,7 @@ Every API error has a status, a machine-readable `type`, a message and a `reques
 import { APIError, NotFoundError, RateLimitError } from '@leadsets/sdk'
 
 try {
-  await ls.people.enrich({ email: 'maya@northwind.io' })
+  await ls.people.enrich({ email: 'jane@example.com' })
 } catch (err) {
   if (err instanceof NotFoundError) {
     // nothing to enrich; nothing was counted

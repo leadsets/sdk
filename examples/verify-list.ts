@@ -4,7 +4,7 @@ import { Leadsets } from '@leadsets/sdk'
 
 const ls = new Leadsets()
 
-const emails = ['maya@northwind.io', 'sam@stackfold.com', 'not-an-email', 'jo@parcelry.co']
+const emails = ['jane@example.com', 'sam@example.org', 'not-an-email', 'jo@example.net']
 
 const keep: string[] = []
 for (let i = 0; i < emails.length; i += 100) {
