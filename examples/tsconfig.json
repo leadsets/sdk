@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2022",
+    "paths": { "@leadsets/sdk": ["../src/index.ts"] }
+  },
+  "include": ["."]
+}
