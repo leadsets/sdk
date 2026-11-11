@@ -168,7 +168,7 @@ describe('endpoints', () => {
     const reply = {
       body: {
         results: [
-          { email: 'a@b.co', status: 'verified', confidence: 0.95, checked_at: 'x', source: 's', mx_provider: null },
+          { email: 'a@b.co', status: 'verified', confidence: 0.95, checked_at: 'x', mx_provider: null },
         ],
         summary: { verified: 1, catch_all: 0, unknown: 0, invalid: 0, not_checked: 0 },
         usage: { enrich_records_counted: 1 },

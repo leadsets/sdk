@@ -8,7 +8,7 @@ try {
   const { person, matched_by } = await ls.people.enrich({ full_name: 'Jane Doe', company_domain: 'example.com' })
   console.log(`matched by ${matched_by}:`, person.full_name, person.title, person.email?.address, person.email?.status)
   // Every field says where it came from and when it was last seen.
-  console.log('title source:', person.sources.title)
+  console.log('title freshness:', person.sources.title)
 } catch (err) {
   // A miss costs nothing.
   if (err instanceof NotFoundError) console.log('No match; nothing was counted.')

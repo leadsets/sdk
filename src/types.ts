@@ -20,9 +20,8 @@ export type OneOrMany<T> = T | T[]
 
 // ---- Shared response parts -----------------------------------------------------------------
 
-/** Where a field came from, when it was last seen and how confident we are in it. */
+/** When a field was last seen and how confident we are in it. */
 export interface FieldSource {
-  source: string | null
   seen_at: string | null
   confidence: number | null
 }
@@ -101,7 +100,6 @@ export interface Email {
   type: 'business' | 'personal' | string
   confidence: number
   checked_at: string | null
-  verified_by: string | null
   mx_provider: string | null
 }
 
@@ -270,7 +268,6 @@ export interface EmailVerification {
   status: VerificationStatus | null
   confidence: number | null
   checked_at: string | null
-  source: string | null
   mx_provider: string | null
   /** Why the email was not checked, e.g. "not_checked: limit reached". */
   reason?: string

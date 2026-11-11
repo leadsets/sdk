@@ -6,7 +6,7 @@
 
 The official TypeScript and JavaScript client for the [Leadsets](https://www.leadsets.ai/?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=intro) API.
 
-Leadsets is B2B data for AI agents and the developers who build them. Search people and companies, enrich a person or a company, verify emails and scrape company websites and careers pages, over a REST API or an MCP server. Every record says why it matched, every field carries its source and freshness, and emails are only labelled verified when they are.
+Leadsets is B2B data for AI agents and the developers who build them. Search people and companies, enrich a person or a company, verify emails and scrape company websites and careers pages, over a REST API or an MCP server. Every record says why it matched, every field carries when it was last checked and a confidence score, and emails are only labelled verified when they are.
 
 - Typed requests and responses
 - Automatic retries with backoff on 429 (honouring `Retry-After`), 5xx and network errors
@@ -113,7 +113,7 @@ const res = await ls.people.search({
 for (const p of res.items) {
   console.log(p.full_name, p.title, p.company?.domain, p.email?.address, p.email?.status)
   console.log(p.match_reasons) // ["title", "size", "country", "verified_email"]
-  console.log(p.sources.title) // { source, seen_at, confidence }
+  console.log(p.sources.title) // { seen_at, confidence }
 }
 ```
 
