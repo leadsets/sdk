@@ -167,9 +167,7 @@ describe('endpoints', () => {
   it('emails.verify takes an object, a string or an array', async () => {
     const reply = {
       body: {
-        results: [
-          { email: 'a@b.co', status: 'verified', confidence: 0.95, checked_at: 'x', mx_provider: null },
-        ],
+        results: [{ email: 'a@b.co', status: 'verified', confidence: 0.95, checked_at: 'x', mx_provider: null }],
         summary: { verified: 1, catch_all: 0, unknown: 0, invalid: 0, not_checked: 0 },
         usage: { enrich_records_counted: 1 },
         request_id: 'r',
