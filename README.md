@@ -1,6 +1,6 @@
 # Leadsets TypeScript SDK
 
-[![npm](https://img.shields.io/npm/v/@leadsets/sdk.svg)](https://www.npmjs.com/package/@leadsets/sdk)
+[![npm](https://img.shields.io/npm/v/@leadsetsai/sdk.svg)](https://www.npmjs.com/package/@leadsetsai/sdk)
 [![CI](https://github.com/leadsets/sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/leadsets/sdk/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -33,11 +33,11 @@ Leadsets is B2B data for AI agents and the developers who build them. Search peo
 ## Install
 
 ```bash
-npm install @leadsets/sdk
+npm install @leadsetsai/sdk
 # or
-pnpm add @leadsets/sdk
-yarn add @leadsets/sdk
-bun add @leadsets/sdk
+pnpm add @leadsetsai/sdk
+yarn add @leadsetsai/sdk
+bun add @leadsetsai/sdk
 ```
 
 ## Quickstart
@@ -51,7 +51,7 @@ export LEADSETS_API_KEY="ls_live_…"
 Ten revenue leaders at US SaaS companies with 20–200 people:
 
 ```ts
-import { Leadsets } from '@leadsets/sdk'
+import { Leadsets } from '@leadsetsai/sdk'
 
 const ls = new Leadsets(process.env.LEADSETS_API_KEY)
 
@@ -271,7 +271,7 @@ Every API error has a status, a machine-readable `type`, a message and a `reques
 `FreeRecordsExhaustedError` and `ScrapeUnitsExhaustedError` extend `PaymentRequiredError`. Every HTTP error extends `APIError`, and everything extends `LeadsetsError`. `ConnectionError` and `TimeoutError` are exported as aliases of the last two.
 
 ```ts
-import { APIError, NotFoundError, RateLimitError } from '@leadsets/sdk'
+import { APIError, NotFoundError, RateLimitError } from '@leadsetsai/sdk'
 
 try {
   await ls.people.enrich({ email: 'jane@example.com' })
@@ -346,10 +346,10 @@ await ls.people.search(params, {
 
 ## TypeScript
 
-Every request and response is typed: `PeopleSearchParams`, `PeopleSearchResponse`, `Person`, `Company`, `Email`, `EmailVerification`, `ScrapeCompanyResponse`, `Job`, `UsageResponse`, `Usage` and more, all exported from `@leadsets/sdk`.
+Every request and response is typed: `PeopleSearchParams`, `PeopleSearchResponse`, `Person`, `Company`, `Email`, `EmailVerification`, `ScrapeCompanyResponse`, `Job`, `UsageResponse`, `Usage` and more, all exported from `@leadsetsai/sdk`.
 
 ```ts
-import type { Person, PeopleSearchParams } from '@leadsets/sdk'
+import type { Person, PeopleSearchParams } from '@leadsetsai/sdk'
 
 const query: PeopleSearchParams = { seniority: ['vp'], function: ['marketing'] }
 ```

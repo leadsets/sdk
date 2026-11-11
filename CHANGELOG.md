@@ -8,7 +8,7 @@ All notable changes to this package are documented here. The format follows
 
 ### Added
 
-- First release of `@leadsets/sdk`.
+- First release of `@leadsetsai/sdk`.
 - `people.search`, `people.enrich`, `companies.search`, `companies.enrich`, `emails.verify`,
   `scrape.company`, `scrape.jobs`, `jobs.get` and `usage.get`.
 - Pagination with `searchAll` (records) and `searchPages` (pages), with `maxItems` and `maxPages`.

@@ -1,6 +1,6 @@
 // Ten revenue leaders at US SaaS companies with 20–200 people.
 // Run: LEADSETS_API_KEY=ls_live_… npx tsx examples/search.ts
-import { Leadsets } from '@leadsets/sdk'
+import { Leadsets } from '@leadsetsai/sdk'
 
 const ls = new Leadsets(process.env.LEADSETS_KEY)
 

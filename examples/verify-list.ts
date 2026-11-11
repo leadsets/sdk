@@ -1,6 +1,6 @@
 // Verify a list of emails in batches of 100 and keep only the deliverable ones.
 // Run: LEADSETS_API_KEY=ls_live_… npx tsx examples/verify-list.ts
-import { Leadsets } from '@leadsets/sdk'
+import { Leadsets } from '@leadsetsai/sdk'
 
 const ls = new Leadsets()
 

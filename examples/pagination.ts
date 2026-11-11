@@ -1,6 +1,6 @@
 // Walk every page of a search. maxItems caps what you pay for: the last page asks only for what's left.
 // Run: LEADSETS_API_KEY=ls_live_… npx tsx examples/pagination.ts
-import { Leadsets } from '@leadsets/sdk'
+import { Leadsets } from '@leadsetsai/sdk'
 
 const ls = new Leadsets()
 

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ES2022",
-    "paths": { "@leadsets/sdk": ["../src/index.ts"] }
+    "paths": { "@leadsetsai/sdk": ["../src/index.ts"] }
   },
   "include": ["."]
 }

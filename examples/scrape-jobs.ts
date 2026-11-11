@@ -1,6 +1,6 @@
 // Open roles from a company's careers page: a hiring signal. Needs a paid plan with scrape units.
 // Run: LEADSETS_API_KEY=ls_live_… npx tsx examples/scrape-jobs.ts
-import { Leadsets, PermissionDeniedError, ScrapeUnitsExhaustedError } from '@leadsets/sdk'
+import { Leadsets, PermissionDeniedError, ScrapeUnitsExhaustedError } from '@leadsetsai/sdk'
 
 const ls = new Leadsets()
 

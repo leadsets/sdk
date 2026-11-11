@@ -57,4 +57,4 @@ jobs:
       - name: Load ESM and CJS builds
         run: |
           node -e "const { Leadsets } = require('./dist/index.cjs'); new Leadsets('ls_live_x')"
-          node --input-type=module -e "import { Leadsets } from '@leadsets/sdk'; new Leadsets('ls_live_x')"
+          node --input-type=module -e "import { Leadsets } from '@leadsetsai/sdk'; new Leadsets('ls_live_x')"

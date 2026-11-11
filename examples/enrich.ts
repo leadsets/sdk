@@ -1,6 +1,6 @@
 // Enrich a person (from a LinkedIn URL, a work email, or a name plus company domain) and a company.
 // Run: LEADSETS_API_KEY=ls_live_… npx tsx examples/enrich.ts
-import { Leadsets, NotFoundError } from '@leadsets/sdk'
+import { Leadsets, NotFoundError } from '@leadsetsai/sdk'
 
 const ls = new Leadsets()
 

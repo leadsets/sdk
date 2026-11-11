@@ -9,7 +9,7 @@ import {
   Leadsets,
   NotFoundError,
   RateLimitError,
-} from '@leadsets/sdk'
+} from '@leadsetsai/sdk'
 
 const ls = new Leadsets({ maxRetries: 3 })
 
