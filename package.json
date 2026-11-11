@@ -1,10 +1,10 @@
 {
   "name": "@leadsetsai/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Official TypeScript and JavaScript SDK for the Leadsets B2B data API: people and company search, enrichment, email verification and web scraping.",
   "license": "MIT",
   "author": "Leadsets",
-  "homepage": "https://www.leadsets.ai/docs?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=package-json",
+  "homepage": "https://www.leadsets.ai/docs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leadsets/sdk.git"
