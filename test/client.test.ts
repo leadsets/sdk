@@ -284,3 +284,64 @@ describe('endpoints', () => {
     expect(res.lastResponse.idempotencyKey).toBe('row-1')
   })
 })
+
+describe('keywords, priorities and counts', () => {
+  it('count sends count_only and returns the count', async () => {
+    const m = mockFetch({
+      body: { count: 10_000, count_capped: true, usage: { search_records_counted: 0 }, request_id: 'req_1' },
+    })
+    const ls = client(m)
+    const res = await ls.companies.count({
+      keywords: ['clay', 'gtm engineering'],
+      exclude_keywords: 'pottery',
+      country: 'US',
+    })
+    expect(m.calls[0]?.url).toMatch(/\/v1\/companies\/search$/)
+    expect(m.calls[0]?.body).toEqual({
+      keywords: ['clay', 'gtm engineering'],
+      exclude_keywords: 'pottery',
+      country: 'US',
+      count_only: true,
+    })
+    expect(res).toMatchObject({ count: 10_000, count_capped: true })
+    await ls.people.count({ company_keywords: 'clay', title: 'founder', match_headline: true })
+    expect(m.calls[1]?.url).toMatch(/\/v1\/people\/search$/)
+    expect(m.calls[1]?.body).toMatchObject({ company_keywords: 'clay', count_only: true })
+  })
+
+  it('search with priorities sends them as given and types the answer', async () => {
+    const m = mockFetch({
+      body: {
+        company: {
+          company_id: 'c1',
+          name: 'Northwind',
+          domain: 'northwind.io',
+          email_domain: 'northwind.com',
+          linkedin_url: null,
+        },
+        items: [{ ...person(), priority: 1, headline: 'Founder at Northwind' }],
+        next_cursor: null,
+        usage: { ...usage, limits: { search_records_5h: 7500 }, resets_at: { search_5h: '2026-11-19T18:30:00Z' } },
+        request_id: 'req_1',
+      },
+    })
+    const res = await client(m).people.search({
+      company_domain: 'northwind.io',
+      priorities: [
+        { title: ['founder', 'ceo'], match_headline: true },
+        { title: 'head of growth', exclude_title: 'intern' },
+      ],
+      limit: 3,
+    })
+    expect(m.calls[0]?.body).toMatchObject({
+      priorities: [
+        { title: ['founder', 'ceo'], match_headline: true },
+        { title: 'head of growth', exclude_title: 'intern' },
+      ],
+    })
+    expect(res.company?.email_domain).toBe('northwind.com')
+    expect(res.items[0]?.priority).toBe(1)
+    expect(res.items[0]?.headline).toBe('Founder at Northwind')
+    expect(res.usage.limits?.search_records_5h).toBe(7500)
+  })
+})

@@ -99,7 +99,26 @@ Every method takes an optional last argument with [request options](#per-request
 
 ### People search
 
-Filters: `title`, `seniority` (`c_level`, `vp`, `head`, `director`, `manager`, `ic`), `function` (`revenue`, `marketing`, `engineering`, `product`, `ops`, `finance`, `hr`), `company_domain`, `employees` (`"50-200"`, `"1000+"`, `"<50"`), `industry` (slugs such as `"saas"`), `country` (ISO 3166-1 alpha-2), `has_verified_email`, `max_age_days`, `exclude_stale`, `limit` (1–100, default 25) and `cursor`. A string or an array works wherever a list is accepted.
+Filters: `title` (add `match_headline: true` to also match the LinkedIn headline), `seniority` (`c_level`, `vp`, `head`, `director`, `manager`, `ic`), `function` (`revenue`, `marketing`, `engineering`, `product`, `ops`, `finance`, `hr`), `company_domain`, `company_keywords` / `exclude_company_keywords` (what their company does), `employees` (`"50-200"`, `"1000+"`, `"<50"`), `industry` (slugs such as `"saas"`), `country` (ISO 3166-1 alpha-2), `has_verified_email`, `max_age_days`, `exclude_stale`, `limit` (1–100, default 25) and `cursor`. A string or an array works wherever a list is accepted.
+
+Count before you pull, for free, and find the best contacts at one company in your order of preference:
+
+```ts
+const { count } = await ls.companies.count({
+  keywords: ['clay', 'gtm engineering'],
+  exclude_keywords: ['pottery'],
+  country: 'US',
+})
+
+const res = await ls.people.search({
+  company_domain: 'northwind.io',
+  priorities: [{ title: ['founder', 'ceo'], match_headline: true }, { title: ['head of growth', 'vp sales'] }],
+  limit: 3,
+})
+for (const p of res.items) console.log(p.priority, p.full_name, p.email?.address)
+```
+
+`companies.search` also takes `keywords` and `exclude_keywords`: whole words in the company's name, description and specialties.
 
 ```ts
 const res = await ls.people.search({
