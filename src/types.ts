@@ -53,7 +53,11 @@ export interface Usage {
   scrape_units_left?: number
   /** True when limits could not be checked for this call. */
   degraded?: boolean
-  [key: string]: number | boolean | undefined
+  /** Paid plans: the limits behind the `*_left_*` numbers, e.g. `search_records_5h`, `concurrent_searches`. */
+  limits?: Record<string, number>
+  /** Paid plans: when the oldest usage leaves each window (ISO 8601), e.g. `search_5h`, `search_week`. */
+  resets_at?: Record<string, string | null>
+  [key: string]: number | boolean | Record<string, number> | Record<string, string | null> | undefined
 }
 
 /** Rate-limit headers of a response, parsed. `null` when the header was absent. */
@@ -107,6 +111,8 @@ export interface PersonCompany {
   company_id: string | null
   name: string | null
   domain: string | null
+  /** The domain the company's work emails use, when known. */
+  email_domain?: string | null
   industry: string | null
   employees: number | null
   employee_range: string | null
@@ -118,6 +124,8 @@ export interface Person {
   first_name: string | null
   last_name: string | null
   title: string | null
+  /** LinkedIn headline, when known. */
+  headline?: string | null
   seniority: Seniority | null
   /** Finer-grained seniority, e.g. "founder" or "senior". */
   seniority_detail: string | null
@@ -132,6 +140,8 @@ export interface Person {
   personal_email?: Email | null
   /** Which filters this record matched (search results only). */
   match_reasons?: string[]
+  /** With `priorities`: which priority found this person (1 for the first group). */
+  priority?: number
   refreshed_at: string | null
   confirmed_at: string | null
   stale_after_at: string | null
@@ -140,13 +150,43 @@ export interface Person {
   sources: Record<string, FieldSource>
 }
 
+/** One group of titles for `PeopleSearchParams.priorities`, best first. */
+export interface PeoplePriority {
+  /** Titles for this priority, fuzzy-matched like `title`. */
+  title: OneOrMany<string>
+  /** Titles that rule a person out of this priority, e.g. ["assistant", "intern"]. */
+  exclude_title?: OneOrMany<string>
+  /** Replaces the top-level `seniority` for this priority. */
+  seniority?: OneOrMany<Seniority>
+  /** Replaces the top-level `function` for this priority. */
+  function?: OneOrMany<PersonFunction>
+  /** Replaces the top-level `country` for this priority. */
+  country?: OneOrMany<string>
+  /** Also match these titles against the LinkedIn headline. */
+  match_headline?: boolean
+}
+
 export interface PeopleSearchParams {
   /** Job titles. Fuzzy-matched: "VP Sales" also finds "Vice President, Sales". */
   title?: OneOrMany<string>
+  /** Also match title words against the LinkedIn headline. */
+  match_headline?: boolean
   seniority?: OneOrMany<Seniority>
   function?: OneOrMany<PersonFunction>
   /** Only people at these companies (domains). */
   company_domain?: OneOrMany<string>
+  /** With `priorities`: the company by its LinkedIn page, instead of `company_domain`. */
+  company_linkedin_url?: string
+  /** What their company does, e.g. ["clay", "gtm engineering"]: whole words in its name, description and specialties. */
+  company_keywords?: OneOrMany<string>
+  /** Leave out people whose company mentions any of these. */
+  exclude_company_keywords?: OneOrMany<string>
+  /**
+   * Best contacts at ONE company (one `company_domain` or `company_linkedin_url`): 1–10 groups of
+   * titles, best first. Results fill from the first group, never repeat a person and carry
+   * `priority`. `limit` 1–25 (default 5); no cursor, no top-level `title`.
+   */
+  priorities?: PeoplePriority[]
   /** Company headcount range, e.g. "50-200", "1000+" or "<50". */
   employees?: string
   /** Leadsets industry slugs, e.g. "saas". */
@@ -170,6 +210,23 @@ export interface PeopleSearchParams {
 export interface PeopleSearchResponse extends APIResponse {
   items: Person[]
   next_cursor: string | null
+  /** With `priorities`: the company that was matched, or null when none is on file. */
+  company?: {
+    company_id: string | null
+    name: string | null
+    domain: string | null
+    email_domain: string | null
+    linkedin_url: string | null
+  } | null
+  /** With `priorities`, when no company is on file for the LinkedIn page. */
+  note?: string
+}
+
+/** `people.count` / `companies.count`: how many records match. Uses no records. */
+export interface CountResponse extends APIResponse {
+  count: number
+  /** True when counting stopped at 10,000: there are at least `count` matches. */
+  count_capped: boolean
 }
 
 export interface PersonEnrichParams {
@@ -201,6 +258,8 @@ export interface Company {
   company_id: string
   name: string | null
   domain: string | null
+  /** The domain its work emails use, when known (may differ from `domain`). */
+  email_domain?: string | null
   linkedin_url: string | null
   industry: string | null
   naics: string | null
@@ -211,6 +270,8 @@ export interface Company {
   founded_year: number | null
   description: string | null
   technologies: string[]
+  /** What the company says it does (LinkedIn specialties). */
+  specialties?: string[]
   match_reasons?: string[]
   refreshed_at: string | null
   confirmed_at: string | null
@@ -220,13 +281,17 @@ export interface Company {
 }
 
 export interface CompaniesSearchParams {
+  /** What the company does, e.g. ["lead generation", "appointment setting"]: whole words in its name, description and specialties; any matches. */
+  keywords?: OneOrMany<string>
+  /** Leave out companies that mention any of these, e.g. ["pottery"]. */
+  exclude_keywords?: OneOrMany<string>
   industry?: OneOrMany<string>
   /** Headcount range, e.g. "50-200" or "1000+". */
   employees?: string
   country?: OneOrMany<string>
   /** Technologies the company uses, e.g. "hubspot". Matches any. */
   technology?: OneOrMany<string>
-  /** Only these domains. */
+  /** Only these domains (website or email domain). */
   domain?: OneOrMany<string>
   max_age_days?: number
   exclude_stale?: boolean

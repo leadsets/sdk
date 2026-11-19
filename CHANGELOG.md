@@ -4,6 +4,21 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-11-19
+
+### Added
+
+- `companies.search`: `keywords` and `exclude_keywords`, matched as whole words in the company's
+  name, description and specialties. Companies carry `specialties` and `email_domain`.
+- `people.search`: `company_keywords` and `exclude_company_keywords` (what the person's company does),
+  `match_headline` (title words also match the LinkedIn headline) and `priorities` with
+  `company_linkedin_url`: the best contacts at one company, in your order of preference, each
+  tagged with `priority`. People carry `headline`; the response carries `company` with `priorities`.
+- `people.count` and `companies.count`: how many records match (`count`, `count_capped`), using no
+  records.
+- `Usage.limits` and `Usage.resets_at`: the limits behind the remaining counts, and when each window
+  resets.
+
 ## [0.1.1] - 2026-11-11
 
 ### Changed
@@ -25,4 +40,6 @@ All notable changes to this package are documented here. The format follows
 - Parsed rate-limit headers on `lastResponse.rateLimit`.
 - ESM and CommonJS builds with type declarations; no runtime dependencies.
 
+[0.2.0]: https://github.com/leadsets/sdk/releases/tag/v0.2.0
+[0.1.1]: https://github.com/leadsets/sdk/releases/tag/v0.1.1
 [0.1.0]: https://github.com/leadsets/sdk/releases/tag/v0.1.0

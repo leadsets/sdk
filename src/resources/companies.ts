@@ -6,6 +6,7 @@ import type {
   Company,
   CompanyEnrichParams,
   CompanyEnrichResponse,
+  CountResponse,
 } from '../types.js'
 
 export class Companies {
@@ -14,6 +15,20 @@ export class Companies {
   /** POST /v1/companies/search. 1 search record per record returned; empty results use none. */
   search(params: CompaniesSearchParams = {}, options?: RequestOptions): Promise<CompaniesSearchResponse> {
     return this.http.request({ method: 'POST', path: '/companies/search', body: params, idempotent: true }, options)
+  }
+
+  /**
+   * POST /v1/companies/search with `count_only`: how many companies match, without returning them.
+   * Uses no records; counts as one request. Counting stops at 10,000 (`count_capped`).
+   */
+  count(
+    params: Omit<CompaniesSearchParams, 'limit' | 'cursor'> = {},
+    options?: RequestOptions,
+  ): Promise<CountResponse> {
+    return this.http.request(
+      { method: 'POST', path: '/companies/search', body: { ...params, count_only: true }, idempotent: true },
+      options,
+    )
   }
 
   /** Every matching company, page after page. Use `maxItems` to cap what you pay for. */
