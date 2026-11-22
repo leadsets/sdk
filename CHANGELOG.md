@@ -10,6 +10,8 @@ All notable changes to this package are documented here. The format follows
 
 - Published from GitHub Actions with npm trusted publishing (OIDC) and provenance, without a
   long-lived npm token. No changes to the package itself.
+- Releases are automatic: merging `develop` into `main` creates the GitHub release, and each
+  GitHub release is published to npm with the same version.
 
 ## [0.2.0] - 2026-11-19
 

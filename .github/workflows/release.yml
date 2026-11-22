@@ -1,0 +1,43 @@
+name: Release
+
+# develop → main merge: create the GitHub release vX.Y.Z for the version in package.json, then
+# start publish.yml, which publishes the same version to npm. A merge that doesn't change the
+# version does nothing (its release already exists).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write # create the tag and release
+  actions: write # start publish.yml
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="$(node -p "require('./package.json').version")"
+          src="$(sed -n "s/^export const VERSION = '\(.*\)'$/\1/p" src/version.ts)"
+          test "$v" = "$src" || { echo "package.json $v does not match src/version.ts $src"; exit 1; }
+          tag="v$v"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists; nothing to do."
+            exit 0
+          fi
+          # Notes: this version's section of CHANGELOG.md.
+          awk -v v="$v" '$0 ~ "^## \\[" v "\\]" {f=1; next} /^## \[/ {if (f) exit} f' CHANGELOG.md > notes.md
+          test -s notes.md || { echo "CHANGELOG.md has no section for $v"; exit 1; }
+          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes-file notes.md
+          # A release made with the workflow token doesn't trigger other workflows, so start the
+          # publish directly (workflow_dispatch is the exception GitHub allows).
+          gh workflow run publish.yml --ref main -f tag="$tag"
