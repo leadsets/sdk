@@ -35,8 +35,11 @@ Tests use a mocked `fetch` only. They never call the live API and need no key.
 
 ## Releases
 
-Maintainers release by bumping `version` in `package.json` and `src/version.ts`, updating the
-changelog, and pushing a `vX.Y.Z` tag. The release workflow publishes to npm.
+Maintainers release by bumping `version` in `package.json` and `src/version.ts` and adding that
+version's section to `CHANGELOG.md`, then merging `develop` into `main`. On the merge,
+`release.yml` creates the GitHub release `vX.Y.Z` (notes from the changelog), and `publish.yml`
+publishes the same version to npm with trusted publishing. A release published by hand on GitHub
+is also published to npm. The GitHub release and the npm version always match.
 
 ## Code of conduct
 
