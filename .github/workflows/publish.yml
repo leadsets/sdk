@@ -29,7 +29,7 @@ jobs:
       - run: npm run build
       - run: npm test
       # Trusted publishing: npm exchanges the workflow's OIDC token, no NPM_TOKEN secret.
-      # Configured on npmjs.com for leadsets/sdk, workflow release.yml.
+      # Configured on npmjs.com for leadsets/sdk, workflow publish.yml.
       - run: npm publish --access public
       - name: GitHub release
         env:
