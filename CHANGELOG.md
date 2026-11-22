@@ -4,6 +4,13 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-11-22
+
+### Changed
+
+- Published from GitHub Actions with npm trusted publishing (OIDC) and provenance, without a
+  long-lived npm token. No changes to the package itself.
+
 ## [0.2.0] - 2026-11-19
 
 ### Added
@@ -40,6 +47,7 @@ All notable changes to this package are documented here. The format follows
 - Parsed rate-limit headers on `lastResponse.rateLimit`.
 - ESM and CommonJS builds with type declarations; no runtime dependencies.
 
+[0.2.1]: https://github.com/leadsets/sdk/releases/tag/v0.2.1
 [0.2.0]: https://github.com/leadsets/sdk/releases/tag/v0.2.0
 [0.1.1]: https://github.com/leadsets/sdk/releases/tag/v0.1.1
 [0.1.0]: https://github.com/leadsets/sdk/releases/tag/v0.1.0
