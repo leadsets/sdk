@@ -42,7 +42,7 @@ bun add @leadsetsai/sdk
 
 ## Quickstart
 
-[Create a free account](https://www.leadsets.ai/signup?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=quickstart) and copy your API key. Keys start with `ls_live_`.
+Sign-up is waitlist-only until the public launch on 10 December 2026. [Join the waitlist](https://www.leadsets.ai/signup?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=quickstart). At launch, the free plan will include 1,000 enrichment records and 100 search records, no card. After you have an account, copy your API key. Keys start with `ls_live_`.
 
 ```bash
 export LEADSETS_API_KEY="ls_live_…"
@@ -79,7 +79,7 @@ const ls = new Leadsets() // from LEADSETS_API_KEY / LEADSETS_KEY
 const ls = new Leadsets({ apiKey: 'ls_live_…' }) // with other options
 ```
 
-Keep the key server-side. Don't ship it to a browser. A free key is available at [leadsets.ai/signup](https://www.leadsets.ai/signup?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=authentication).
+Keep the key server-side. Don't ship it to a browser. [Join the waitlist](https://www.leadsets.ai/signup?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=authentication); a free key will be available at the public launch on 10 December 2026.
 
 ## Resources
 
@@ -313,7 +313,7 @@ try {
 
 - **Records count only when data comes back.** Empty results, misses and errors use no records. Every call counts one request toward its window, hits and misses alike.
 - **Paid plans have rolling five-hour windows** for records and for requests, plus a **weekly** records window, kept separately for search and for enrichment. Scraping uses scrape units.
-- **Free** has 1,000 enrichment records and 100 search records, one time, with no card needed. Paid plans start at $29/month. See [pricing](https://www.leadsets.ai/pricing?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=limits).
+- **Free** (at public launch on 10 December 2026) has 1,000 enrichment records and 100 search records, one time, with no card needed. Paid plans start at $29/month. See [pricing](https://www.leadsets.ai/pricing?utm_source=github&utm_medium=readme&utm_campaign=sdk-js&utm_content=limits).
 
 Every response has a `usage` object with what the call counted and what's left, and the SDK parses the rate-limit headers into `res.lastResponse.rateLimit`:
 

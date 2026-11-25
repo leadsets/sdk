@@ -62,7 +62,7 @@ export class HttpClient {
     const apiKey = opts.apiKey ?? env('LEADSETS_API_KEY') ?? env('LEADSETS_KEY')
     if (!apiKey) {
       throw new LeadsetsError(
-        'No API key. Pass one to new Leadsets(apiKey) or set the LEADSETS_API_KEY environment variable. Get a free key at https://www.leadsets.ai/signup.',
+        'No API key. Pass one to new Leadsets(apiKey) or set the LEADSETS_API_KEY environment variable. Join the waitlist at https://www.leadsets.ai/signup (public launch 10 December 2026).',
       )
     }
     this.apiKey = apiKey
