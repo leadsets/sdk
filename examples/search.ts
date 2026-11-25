@@ -10,6 +10,7 @@ const res = await ls.people.search({
   employees: '20-200',
   country: 'US',
   industry: 'saas',
+  include_emails: true, // 1 enrichment record per email
   limit: 10,
 })
 

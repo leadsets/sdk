@@ -134,8 +134,10 @@ export interface Person {
   function_detail: string | null
   linkedin_url: string | null
   location: Location
-  company: PersonCompany | null
-  email: Email | null
+  /** Absent when left out with `include_company: false`. */
+  company?: PersonCompany | null
+  /** On `people.search`, present only with `include_emails` or `has_verified_email`. */
+  email?: Email | null
   /** Present on `people.enrich` with `include_personal_email`. */
   personal_email?: Email | null
   /** Which filters this record matched (search results only). */
@@ -195,6 +197,10 @@ export interface PeopleSearchParams {
   country?: OneOrMany<string>
   /** Only people with a verified work email. */
   has_verified_email?: boolean
+  /** Company details on each person (default true): the company is one more search record per person. */
+  include_company?: boolean
+  /** The work email on each person when one is found (default false, on with `has_verified_email`): 1 enrichment record each. */
+  include_emails?: boolean
   /** Only records refreshed within this many days. */
   max_age_days?: number
   /** Leave out records flagged stale. */
@@ -218,7 +224,7 @@ export interface PeopleSearchResponse extends APIResponse {
     email_domain: string | null
     linkedin_url: string | null
   } | null
-  /** With `priorities`, when no company is on file for the LinkedIn page. */
+  /** What was left out when records ran short, or (with `priorities`) that no company is on file. */
   note?: string
 }
 
