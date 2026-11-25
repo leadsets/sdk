@@ -12,7 +12,10 @@ import type {
 export class People {
   constructor(private readonly http: HttpClient) {}
 
-  /** POST /v1/people/search. 1 search record per record returned; empty results use none. */
+  /**
+   * POST /v1/people/search. 1 search record per person and 1 for their company (`include_company`), 1
+   * enrichment record per work email (`include_emails`); empty results use none.
+   */
   search(params: PeopleSearchParams = {}, options?: RequestOptions): Promise<PeopleSearchResponse> {
     return this.http.request({ method: 'POST', path: '/people/search', body: params, idempotent: true }, options)
   }

@@ -4,6 +4,19 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-11-25
+
+### Added
+
+- `people.search`: `include_company` (default true) and `include_emails` (default false, on with `has_verified_email`).
+
+### Changed
+
+- The API counts each person as one search record and their company as another, and each work email
+  as one enrichment record. Pass `include_company: false` for people only.
+- Search results no longer carry work emails unless you ask for them with `include_emails: true`. `Person.company` and
+  `Person.email` are optional in the types: they are absent when left out.
+
 ## [0.2.1] - 2026-11-22
 
 ### Changed

@@ -83,23 +83,25 @@ Keep the key server-side. Don't ship it to a browser. A free key is available at
 
 ## Resources
 
-| Method                        | Endpoint                    | Uses                                                     |
-| ----------------------------- | --------------------------- | -------------------------------------------------------- |
-| `ls.people.search(params)`    | `POST /v1/people/search`    | 1 search record per record returned                      |
-| `ls.people.enrich(params)`    | `POST /v1/people/enrich`    | 1 enrichment record when found (+1 for a personal email) |
-| `ls.companies.search(params)` | `POST /v1/companies/search` | 1 search record per record returned                      |
-| `ls.companies.enrich(params)` | `POST /v1/companies/enrich` | 1 enrichment record when found                           |
-| `ls.emails.verify(params)`    | `POST /v1/emails/verify`    | 1 enrichment record per email checked                    |
-| `ls.scrape.company(params)`   | `POST /v1/scrape/company`   | 1 scrape unit per page read                              |
-| `ls.scrape.jobs(params)`      | `POST /v1/scrape/jobs`      | 1 scrape unit per page read                              |
-| `ls.jobs.get(id)`             | `GET /v1/jobs/{id}`         | nothing                                                  |
-| `ls.usage.get()`              | `GET /v1/usage`             | nothing                                                  |
+| Method                        | Endpoint                    | Uses                                                                     |
+| ----------------------------- | --------------------------- | ------------------------------------------------------------------------ |
+| `ls.people.search(params)`    | `POST /v1/people/search`    | 1 search record per person, 1 per company, 1 enrichment record per email |
+| `ls.people.enrich(params)`    | `POST /v1/people/enrich`    | 1 enrichment record when found (+1 for a personal email)                 |
+| `ls.companies.search(params)` | `POST /v1/companies/search` | 1 search record per record returned                                      |
+| `ls.companies.enrich(params)` | `POST /v1/companies/enrich` | 1 enrichment record when found                                           |
+| `ls.emails.verify(params)`    | `POST /v1/emails/verify`    | 1 enrichment record per email checked                                    |
+| `ls.scrape.company(params)`   | `POST /v1/scrape/company`   | 1 scrape unit per page read                                              |
+| `ls.scrape.jobs(params)`      | `POST /v1/scrape/jobs`      | 1 scrape unit per page read                                              |
+| `ls.jobs.get(id)`             | `GET /v1/jobs/{id}`         | nothing                                                                  |
+| `ls.usage.get()`              | `GET /v1/usage`             | nothing                                                                  |
 
 Every method takes an optional last argument with [request options](#per-request-options).
 
 ### People search
 
-Filters: `title` (add `match_headline: true` to also match the LinkedIn headline), `seniority` (`c_level`, `vp`, `head`, `director`, `manager`, `ic`), `function` (`revenue`, `marketing`, `engineering`, `product`, `ops`, `finance`, `hr`), `company_domain`, `company_keywords` / `exclude_company_keywords` (what their company does), `employees` (`"50-200"`, `"1000+"`, `"<50"`), `industry` (slugs such as `"saas"`), `country` (ISO 3166-1 alpha-2), `has_verified_email`, `max_age_days`, `exclude_stale`, `limit` (1–100, default 25) and `cursor`. A string or an array works wherever a list is accepted.
+Filters: `title` (add `match_headline: true` to also match the LinkedIn headline), `seniority` (`c_level`, `vp`, `head`, `director`, `manager`, `ic`), `function` (`revenue`, `marketing`, `engineering`, `product`, `ops`, `finance`, `hr`), `company_domain`, `company_keywords` / `exclude_company_keywords` (what their company does), `employees` (`"50-200"`, `"1000+"`, `"<50"`), `industry` (slugs such as `"saas"`), `country` (ISO 3166-1 alpha-2), `has_verified_email`, `include_company`, `include_emails`, `max_age_days`, `exclude_stale`, `limit` (1–100, default 25) and `cursor`. A string or an array works wherever a list is accepted.
+
+Each person is one search record and their company another: pass `include_company: false` for people only. Work emails come with `include_emails: true` (or `has_verified_email`) and use 1 enrichment record each.
 
 Count before you pull, for free, and find the best contacts at one company in your order of preference:
 
@@ -113,6 +115,7 @@ const { count } = await ls.companies.count({
 const res = await ls.people.search({
   company_domain: 'northwind.io',
   priorities: [{ title: ['founder', 'ceo'], match_headline: true }, { title: ['head of growth', 'vp sales'] }],
+  include_emails: true,
   limit: 3,
 })
 for (const p of res.items) console.log(p.priority, p.full_name, p.email?.address)

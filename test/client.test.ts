@@ -309,6 +309,23 @@ describe('keywords, priorities and counts', () => {
     expect(m.calls[1]?.body).toMatchObject({ company_keywords: 'clay', count_only: true })
   })
 
+  it('include_company and include_emails are sent, and what is left out is absent', async () => {
+    const { company: _c, email: _e, ...bare } = person()
+    const m = mockFetch({
+      body: {
+        items: [bare],
+        next_cursor: null,
+        usage: { search_records_counted: 1, enrich_records_counted: 0 },
+        request_id: 'r',
+      },
+    })
+    const res = await client(m).people.search({ include_company: false, include_emails: true })
+    expect(m.calls[0]?.body).toEqual({ include_company: false, include_emails: true })
+    expect(res.items[0]?.company).toBeUndefined()
+    expect(res.items[0]?.email).toBeUndefined()
+    expect(res.usage.enrich_records_counted).toBe(0)
+  })
+
   it('search with priorities sends them as given and types the answer', async () => {
     const m = mockFetch({
       body: {
