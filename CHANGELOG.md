@@ -4,6 +4,14 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-11-26
+
+### Changed
+
+- `scrape.jobs` takes the company website only: `{ domain }` is required and `url` is gone (the API no longer
+  accepts it). Roles now also come from LinkedIn's public job listings; `Job.source` can be `"linkedin"`.
+- `ScrapeJobsResponse`: new `company` and `sources`; `careers_url` can be null when only LinkedIn had roles.
+
 ## [0.3.0] - 2026-11-25
 
 ### Added

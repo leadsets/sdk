@@ -211,12 +211,12 @@ console.log(
 
 ### Scrape open roles
 
-Open roles from a company's careers page or job board: title, link, team, location and posted date when shown. `max_pages` defaults to 3.
+Open roles at a company from its website only: its careers page, the job board it uses and LinkedIn's public job listings, merged without repeats. Each role has title, link, team, location, posted date when shown, and `source`. `max_pages` (default 3) covers every source, at 1 scrape unit per page read.
 
 ```ts
 const res = await ls.scrape.jobs({ domain: 'example.com' })
-console.log(res.count, res.careers_url)
-for (const job of res.jobs) console.log(job.title, job.team, job.location, job.url)
+console.log(res.count, res.careers_url, res.sources)
+for (const job of res.jobs) console.log(job.source, job.title, job.location, job.url)
 ```
 
 ### Async jobs
