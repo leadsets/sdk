@@ -209,7 +209,9 @@ describe('endpoints', () => {
       {
         body: {
           domain: 'example.com',
+          company: 'Example',
           careers_url: 'https://example.com/careers',
+          sources: { careers_page: true, job_board: false, linkedin: true },
           jobs: [
             { title: 'AE', url: 'u', location: 'Remote', team: 'Sales', posted: null, source: 'site', found_on: 'u' },
           ],
@@ -235,6 +237,8 @@ describe('endpoints', () => {
     expect(c.key_links.pricing).toBe('https://example.com/pricing')
     expect(c.usage.scrape_units_left).toBe(99)
     expect(j.jobs[0]?.title).toBe('AE')
+    expect(j.sources?.linkedin).toBe(true)
+    expect(j.company).toBe('Example')
   })
 
   it('jobs.get: GET /v1/jobs/{id}, id escaped, no body or Idempotency-Key', async () => {
