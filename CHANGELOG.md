@@ -4,6 +4,14 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-11-26
+
+### Changed
+
+- `scrape.jobs` counts 1 scrape unit per role returned, not per page read (the API's new rule). New `limit`
+  (1–500, default 25) caps the roles returned and stops further reads; `max_pages` is no longer charged.
+- `ScrapeJobsResponse`: new `limited` and `pages_read`; `units_used` is the roles returned.
+
 ## [0.4.0] - 2026-11-26
 
 ### Changed

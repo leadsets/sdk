@@ -91,7 +91,7 @@ Keep the key server-side. Don't ship it to a browser. A free key is available at
 | `ls.companies.enrich(params)` | `POST /v1/companies/enrich` | 1 enrichment record when found                                           |
 | `ls.emails.verify(params)`    | `POST /v1/emails/verify`    | 1 enrichment record per email checked                                    |
 | `ls.scrape.company(params)`   | `POST /v1/scrape/company`   | 1 scrape unit per page read                                              |
-| `ls.scrape.jobs(params)`      | `POST /v1/scrape/jobs`      | 1 scrape unit per page read                                              |
+| `ls.scrape.jobs(params)`      | `POST /v1/scrape/jobs`      | 1 scrape unit per role returned                                          |
 | `ls.jobs.get(id)`             | `GET /v1/jobs/{id}`         | nothing                                                                  |
 | `ls.usage.get()`              | `GET /v1/usage`             | nothing                                                                  |
 
@@ -211,10 +211,10 @@ console.log(
 
 ### Scrape open roles
 
-Open roles at a company from its website only: its careers page, the job board it uses and LinkedIn's public job listings, merged without repeats. Each role has title, link, team, location, posted date when shown, and `source`. `max_pages` (default 3) covers every source, at 1 scrape unit per page read.
+Open roles at a company from its website only: its careers page, the job board it uses and LinkedIn's public job listings, merged without repeats. Each role has title, link, team, location, posted date when shown, and `source`. It counts 1 scrape unit per role returned; `limit` (default 25) caps the roles, and `max_pages` (default 3, not charged) caps the pages read across every source.
 
 ```ts
-const res = await ls.scrape.jobs({ domain: 'example.com' })
+const res = await ls.scrape.jobs({ domain: 'example.com', limit: 10 })
 console.log(res.count, res.careers_url, res.sources)
 for (const job of res.jobs) console.log(job.source, job.title, job.location, job.url)
 ```

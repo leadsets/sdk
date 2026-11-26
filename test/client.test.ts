@@ -216,23 +216,25 @@ describe('endpoints', () => {
             { title: 'AE', url: 'u', location: 'Remote', team: 'Sales', posted: null, source: 'site', found_on: 'u' },
           ],
           count: 1,
-          units_used: 2,
+          limited: true,
+          units_used: 1,
+          pages_read: 2,
           scraped_at: 'x',
-          usage: { scrape_units_counted: 2, scrape_units_left: 97 },
+          usage: { scrape_units_counted: 1, scrape_units_left: 98 },
           request_id: 'r',
         },
       },
     )
     const ls = client(m)
     const c = await ls.scrape.company({ domain: 'example.com', max_pages: 3 })
-    const j = await ls.scrape.jobs({ domain: 'example.com' })
+    const j = await ls.scrape.jobs({ domain: 'example.com', limit: 1 })
     expect(m.calls[0]).toMatchObject({
       url: 'https://api.leadsets.ai/v1/scrape/company',
       body: { domain: 'example.com', max_pages: 3 },
     })
     expect(m.calls[1]).toMatchObject({
       url: 'https://api.leadsets.ai/v1/scrape/jobs',
-      body: { domain: 'example.com' },
+      body: { domain: 'example.com', limit: 1 },
     })
     expect(c.key_links.pricing).toBe('https://example.com/pricing')
     expect(c.usage.scrape_units_left).toBe(99)

@@ -372,7 +372,9 @@ export interface ScrapeParams {
 export interface ScrapeJobsParams {
   /** The company website, e.g. "example.com" or "https://example.com". */
   domain: string
-  /** Pages to read across every source (careers page, job board, LinkedIn), 1–10. Default 3. 1 scrape unit per page read. */
+  /** Open roles to return at most, 1–500. Default 25. 1 scrape unit per role returned; once this many are found, no more pages are read. */
+  limit?: number
+  /** Pages to read across every source (careers page, job board, LinkedIn), 1–10. Default 3. Not charged. */
   max_pages?: number
 }
 
@@ -420,7 +422,12 @@ export interface ScrapeJobsResponse extends APIResponse {
   sources: { careers_page: boolean; job_board: boolean; linkedin: boolean }
   jobs: Job[]
   count: number
+  /** True when `limit` cut the list short: more roles were found, or more pages were left unread. */
+  limited: boolean
+  /** Scrape units counted: the roles returned. */
   units_used: number
+  /** Pages read to find them (not charged). */
+  pages_read: number
   scraped_at: string
 }
 
