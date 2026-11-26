@@ -1,6 +1,6 @@
 {
   "name": "@leadsetsai/sdk",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Official TypeScript and JavaScript SDK for the Leadsets B2B data API: people and company search, enrichment, email verification and web scraping.",
   "license": "MIT",
   "author": "Leadsets",
