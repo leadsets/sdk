@@ -368,6 +368,14 @@ export interface ScrapeParams {
   max_pages?: number
 }
 
+/** `scrape.jobs` takes the company website only. */
+export interface ScrapeJobsParams {
+  /** The company website, e.g. "example.com" or "https://example.com". */
+  domain: string
+  /** Pages to read across every source (careers page, job board, LinkedIn), 1–10. Default 3. 1 scrape unit per page read. */
+  max_pages?: number
+}
+
 export interface ScrapedPage {
   url: string
   title: string | null
@@ -397,14 +405,19 @@ export interface Job {
   location: string | null
   team: string | null
   posted: string | null
-  /** Where the role is listed, e.g. "greenhouse", "lever" or "site". */
+  /** Where the role is listed: "greenhouse", "lever", "ashby", "workable", "recruitee", "smartrecruiters", "bamboohr", "site" or "linkedin". */
   source: string
   found_on: string
 }
 
 export interface ScrapeJobsResponse extends APIResponse {
   domain: string
-  careers_url: string
+  /** The company name searched on LinkedIn. */
+  company: string
+  /** Null when no careers page could be read (roles may still come from LinkedIn). */
+  careers_url: string | null
+  /** Which sources were read. */
+  sources: { careers_page: boolean; job_board: boolean; linkedin: boolean }
   jobs: Job[]
   count: number
   units_used: number
